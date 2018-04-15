@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../build-sdrSwr-Desktop_Qt_5_8_0_GCC_64bit-Release/sdrSwr.png</normaloff>../build-sdrSwr-Desktop_Qt_5_8_0_GCC_64bit-Release/sdrSwr.png</iconset>
+    <normaloff>sdrSwr.png</normaloff>sdrSwr.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout"/>
@@ -1090,7 +1090,7 @@
           <x>0</x>
           <y>0</y>
           <width>139</width>
-          <height>433</height>
+          <height>378</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_13">
