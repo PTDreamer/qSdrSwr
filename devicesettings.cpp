@@ -11,6 +11,8 @@ DeviceSettings::DeviceSettings(QWidget *parent) :
     ui(new Ui::DeviceSettings)
 {
     ui->setupUi(this);
+    ui->devMinimumFreq->setReadOnly(true);
+    ui->devMaximumFreq->setReadOnly(true);
     loadSettings(true);
 }
 
@@ -21,6 +23,8 @@ DeviceSettings::~DeviceSettings()
 
 void DeviceSettings::on_pushButton_clicked()
 {
+    qDeleteAll(availableAmplificationElements);
+    availableAmplificationElements.clear();
     foreach (QObject *w, this->children()) {
         QComboBox *cb = qobject_cast<QComboBox*>(w);
         if(cb)
@@ -110,7 +114,7 @@ void DeviceSettings::loadSettings(bool savedValuesOnly)
             dsb->setValue(settings.value(setting).toDouble());
         else if(chb)
             chb->setChecked(settings.value(setting).toBool());
-        else if(le && !(le->isReadOnly() && settings.value(setting).toString().isEmpty()))
+        else if((le && !le->isReadOnly()) || (le && le->isReadOnly() && savedValuesOnly))
             le->setText(settings.value(setting).toString());
     }
 }

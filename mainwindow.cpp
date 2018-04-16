@@ -421,8 +421,8 @@ void MainWindow::on_actionCapture_Device_triggered()
     if(res == QDialog::Accepted) {
         double max, min;
         m_settings->getMaxMinFrequency(max, min);
-        max = max * 1000000;
-        min = min * 1000000;
+        max = convertFrequencyValue(max, MHZ, (frequencyUnits)ui->scanConfigScanUnits_CB->currentIndex());
+        min = convertFrequencyValue(min, MHZ, (frequencyUnits)ui->scanConfigScanUnits_CB->currentIndex());
         if(max) {
             ui->scanConfigStartFrequency_DS->setMaximum(max);
             ui->scanConfigStopFrequency_SB->setMaximum(max);
