@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     QString settingsPath = QSettings().fileName();
     if(!QFile(settingsPath).exists()) {
+        QFileInfo(settingsPath).absolutePath();
+        QDir().mkdir(QFileInfo(settingsPath).absolutePath());
         QFile::copy(":/settings/settings.conf", settingsPath);
         QFile::setPermissions(settingsPath, QFileDevice::WriteOwner | QFileDevice::ReadOwner | QFileDevice::ReadGroup);
     }
