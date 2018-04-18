@@ -713,6 +713,7 @@ void MainWindow::on_plotDetach_clicked()
     QLineSeries *series = new QLineSeries;
     series->replace(selectedSeries->pointsVector());
     graph_t g = seriesList[selectedSeries];
+    g.m_callouts.clear();
     seriesList.insert(series, g);
     seriesList[series].name = QString("%0 #%1").arg(seriesList[selectedSeries].name).arg(newplots);
     ui->plotList->addItem(seriesList[series].name);
@@ -732,6 +733,15 @@ void MainWindow::on_plotDetach_clicked()
     m_chart->addSeries(series);
     m_chart->setAxisX(x, series);
     m_chart->setAxisY(y, series);
+    foreach (Callout *b, seriesList[selectedSeries].m_callouts) {
+        Callout *c = new Callout(m_chart, b->getColor());
+        c->setText(b->getText());
+        c->setAnchor(b->getAnchor(), series);
+        c->setZValue(11);
+        c->updateGeometry();
+        c->show();
+        seriesList[series].m_callouts.append(c);
+    }
     connect(series, SIGNAL(hovered(QPointF, bool)), this, SLOT(tooltip(QPointF,bool)));
     connect(series, SIGNAL(clicked(QPointF)), this, SLOT(onPlotClicked(QPointF)));
 
@@ -834,14 +844,16 @@ void MainWindow::handleMaxMinSearch(QLineSeries *s, float thresh)
 
       if(s != m_vswr_series)
            return;
-       Callout *c = new Callout(m_chart);
-       c->setText(QString("%1%2 \n%3%4 ").arg(s->points().at(p.GetGlobalMinimumIndex()).x()).arg(ui->scanConfigScanUnits_CB->currentText()).arg(s->points().at(p.GetGlobalMinimumIndex()).y()).arg(yUnit));
-       c->setAnchor(s->points().at(p.GetGlobalMinimumIndex()), s);
-       c->setColor(Qt::green);
-       c->setZValue(11);
-       c->updateGeometry();
-       c->show();
-       seriesList[s].m_callouts.append(c);
+       if(p.GetGlobalMinimumIndex() != -1) {
+           Callout *c = new Callout(m_chart);
+           c->setText(QString("%1%2 \n%3%4 ").arg(s->points().at(p.GetGlobalMinimumIndex()).x()).arg(ui->scanConfigScanUnits_CB->currentText()).arg(s->points().at(p.GetGlobalMinimumIndex()).y()).arg(yUnit));
+           c->setAnchor(s->points().at(p.GetGlobalMinimumIndex()), s);
+           c->setColor(Qt::green);
+           c->setZValue(11);
+           c->updateGeometry();
+           c->show();
+           seriesList[s].m_callouts.append(c);
+       }
 }
 
 void MainWindow::onCurrentHopFinished(quint16 hop, quint16 total)
@@ -891,6 +903,9 @@ void MainWindow::on_plotNameT_textChanged(const QString &arg1)
 
 void MainWindow::on_plotHide_clicked(bool checked) {
     seriesList[selectedSeries].hide = checked;
+    foreach (Callout *c, seriesList[selectedSeries].m_callouts) {
+        c->setVisible(!checked);
+    }
     selectedSeries->setVisible(!checked);
     if(selectedSeries == m_vswr_series) {
         actionsShowVSWR_toggled(!checked);

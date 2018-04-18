@@ -124,6 +124,11 @@ void Callout::setColor(const QColor &value)
     color = value;
 }
 
+QString Callout::getText()
+{
+    return m_text;
+}
+
 void Callout::setText(const QString &text)
 {
     m_text = text;
@@ -138,6 +143,14 @@ void Callout::setAnchor(QPointF point, QAbstractSeries *series)
 {
     m_anchor = point;
     m_series = series;
+}
+
+QPointF Callout::getAnchor() {
+    return m_anchor;
+}
+
+QAbstractSeries * Callout::getSeries() {
+    return m_series;
 }
 
 void Callout::updateGeometry()

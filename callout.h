@@ -60,6 +60,10 @@ public:
     QColor getColor() const;
     void setColor(const QColor &value);
 
+    QString getText();
+
+    QPointF getAnchor();
+    QAbstractSeries * getSeries();
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
