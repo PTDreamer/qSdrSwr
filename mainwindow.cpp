@@ -852,11 +852,10 @@ void MainWindow::onCurrentHopFinished(quint16 hop, quint16 total)
 void MainWindow::onCurrentScanFinished()
 {
    // qDebug() << "Current scan finished";
-    if(seriesList[m_scan_series].searchMaxMin) {
+    if(seriesList[m_scan_series].searchMaxMin)
         handleMaxMinSearch(m_scan_series, seriesList[m_scan_series].maxMinPersistence);
-        handleVSWRUpdate();
-        emit scanUpdated();
-    }
+    handleVSWRUpdate();
+    emit scanUpdated();
 }
 
 void MainWindow::on_plotSearchMaxMin_clicked(bool checked)
@@ -931,6 +930,7 @@ void MainWindow::handleVSWRUpdate()
     }
     m_vswr_series->replace(vector);
     handleMaxMinSearch(m_vswr_series, ui->plotPersistence->value());
+    qDebug() << "VSWR calculated";
 }
 
 void MainWindow::soapyFinished(int code)

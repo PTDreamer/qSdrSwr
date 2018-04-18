@@ -152,6 +152,7 @@ void SoapyPower::processDebug()
             hops = ss.toInt();
         }
     }
+    qDebug() << array;
 }
 
 void SoapyPower::processError()
